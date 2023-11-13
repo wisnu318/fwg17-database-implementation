@@ -87,8 +87,7 @@ CREATE TABLE "promo"(
 	"created_At" TIMESTAMP DEFAULT now(),
 	"updated_At" TIMESTAMP
 );
-CREATE TYPE "orderStatus" AS ENUM ('ON-PROGRES', 'DELIVERED', 'CANCELED','READY-TO-PICK');
-ALTER TYPE "orderStatus" RENAME VALUE 'ON-PROGRES' TO 'ON-PROCESS';
+CREATE TYPE "orderStatus" AS ENUM ('ON-PROCCESS', 'DELIVERED', 'CANCELED','READY-TO-PICK');
 CREATE TABLE "orders" (
 	"id" SERIAL PRIMARY KEY,
 	"userId" INT REFERENCES "users"("id"),
@@ -383,8 +382,7 @@ VALUES
 ('Ditraktir 11-11', 'DITRAKTIR60', NULL, 0.6, now() + INTERVAL '1 day', 35000, 10000);
 
 INSERT INTO "orders"("userId", "orderNumber", "promoId", "total", "taxAmount", "status", "deliveryAddress", "fullName", "email")
-VALUES
-(3, '#001-10112023-0001', NULL, 15000, 0, 'ON-PROCESS', 'Jl. Mawar No. 67, Bukit Kecil, Palembang', 'Nana Sari', 'nanasari@hotmail.com');
+VALUES (3, '#001-10112023-0001', NULL, 15000, 0, 'ON-PROCCESS', 'Jl. Mawar No. 67, Bukit Kecil, Palembang', 'Nana Sari', 'nanasari@hotmail.com');
 
 INSERT INTO "orderDetails" ("productId", "productSizeId", "productVariantId", "quantity", "orderId", "subTotal")
 VALUES
@@ -402,7 +400,11 @@ JOIN "orders" "o" ON "od"."orderId" = "o"."id";
 -- 1
 INSERT INTO "orders"("userId", "orderNumber", "promoId", "total", "taxAmount", "status", "deliveryAddress", "fullName", "email")
 VALUES
-(1, '#001-10112023-0002', NULL, (SELECT "basePrice" FROM "products" WHERE "id" = 1) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2), 0, 'ON-PROCESS', 'Jl. Flamboyan No. 23, Bukit Kecil, Palembang', 'Lala Rizky', 'lalarizky@gmail.com');
+(1, '#001-10112023-0002', NULL, 
+(SELECT "basePrice" FROM "products" WHERE "id" = 1) + 
+(SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + 
+(SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2), 0, 
+'ON-PROCCESS', 'Jl. Flamboyan No. 23, Bukit Kecil, Palembang', 'Lala Rizky', 'lalarizky@gmail.com');
 SELECT * FROM "orders";
 INSERT INTO "orderDetails" ("productId", "productSizeId", "productVariantId", "quantity", "orderId", "subTotal")
 VALUES
@@ -411,9 +413,16 @@ SELECT * FROM "orderDetails";
 -- 2
 INSERT INTO "orders"("userId", "orderNumber", "promoId", "total", "taxAmount", "status", "deliveryAddress", "fullName", "email")
 VALUES
-(2, '#001-10112023-0003', NULL, ((SELECT "basePrice" FROM "products" WHERE "id" = 1) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2)), 0, 'DELIVERED', 'Jl. Teratai No. 45, Bukit Kecil, Palembang', 'Maman Hermawan','mamanhermawan@yahoo.com'),
-(2, '#001-10112023-0004', NULL, ((SELECT "basePrice" FROM "products" WHERE "id" = 61) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1)), 0, 'DELIVERED', 'Jl. Teratai No. 45, Bukit Kecil, Palembang', 'Maman Hermawan','mamanhermawan@yahoo.com'),
-(2, '#001-10112023-0005', NULL, ((SELECT "basePrice" FROM "products" WHERE "id" = 31)) , 0, 'DELIVERED', 'Jl. Teratai No. 45, Bukit Kecil, Palembang', 'Maman Hermawan','mamanhermawan@yahoo.com');
+(2, '#001-10112023-0003', NULL, ((SELECT "basePrice" FROM "products" WHERE "id" = 1) + 
+    (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + 
+    (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2)), 0, 
+    'DELIVERED', 'Jl. Teratai No. 45, Bukit Kecil, Palembang', 'Maman Hermawan','mamanhermawan@yahoo.com'),
+(2, '#001-10112023-0004', NULL, ((SELECT "basePrice" FROM "products" WHERE "id" = 61) + 
+    (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + 
+    (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1)), 0, 
+    'DELIVERED', 'Jl. Teratai No. 45, Bukit Kecil, Palembang', 'Maman Hermawan','mamanhermawan@yahoo.com'),
+(2, '#001-10112023-0005', NULL, ((SELECT "basePrice" FROM "products" WHERE "id" = 31)) , 0, 
+    'DELIVERED', 'Jl. Teratai No. 45, Bukit Kecil, Palembang', 'Maman Hermawan','mamanhermawan@yahoo.com');
 SELECT * FROM "orders";
 INSERT INTO "orderDetails" ("productId", "productSizeId", "productVariantId", "quantity", "orderId", "subTotal")
 VALUES
@@ -454,33 +463,38 @@ VALUES
 ((SELECT "basePrice" FROM "products" WHERE "id" = 69) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 3) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1)) + 
 ((SELECT "basePrice" FROM "products" WHERE "id" = 70) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1)) +
 ((SELECT "basePrice" FROM "products" WHERE "id" = 35)), 0, 'READY-TO-PICK', 'Jl. Kenanga No. 89, Bukit Kecil, Palembang', 'Oki Prasetyo','okiprasetyo@outlook.com');
-SELECT * FROM "orders" WHERE "userId" = 4;
+
+SELECT * FROM "orders";
+SELECT SUM("total") AS "totalUserId4" FROM "orders" WHERE "id" IN (6, 7, 8, 9, 10);
 INSERT INTO "orderDetails" ("productId", "productSizeId", "productVariantId", "quantity", "orderId", "subTotal")
 VALUES
-(1, 1, 2, 1, 6, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(2, 2, 2, 1, 6, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(3, 1, 2, 1, 7, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(4, 2, 2, 1, 7, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(5, 1, 2, 1, 8, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(6, 2, 2, 1, 8, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(7, 1, 2, 1, 9, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(8, 2, 2, 1, 9, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(9, 1, 2, 1, 10, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(10, 2, 2, 1, 10, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(61, 3, 2, 1, 6, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(62, 1, 2, 1, 6, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(63, 3, 2, 1, 7, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(64, 1, 2, 1, 7, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(65, 3, 2, 1, 8, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(66, 1, 2, 1, 8, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(67, 3, 2, 1, 9, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(68, 1, 2, 1, 9, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(69, 3, 2, 1, 10, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(70, 1, 2, 1, 10, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(31, NULL, NULL, 1, 6, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(32, NULL, NULL, 1, 7, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(33, NULL, NULL, 1, 8, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(34, NULL, NULL, 1, 9, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10))),
-(35, NULL, NULL, 1, 10, ((SELECT "total" FROM "orders" WHERE "id" = 6) + (SELECT "total" FROM "orders" WHERE "id" = 7) + (SELECT "total" FROM "orders" WHERE "id" = 8) + (SELECT "total" FROM "orders" WHERE "id" = 9) + (SELECT "total" FROM "orders" WHERE "id" = 10)));
+(1, 1, 2, 1, 6, ((SELECT "basePrice" FROM "products" WHERE "id" = 1) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(2, 2, 2, 1, 6, ((SELECT "basePrice" FROM "products" WHERE "id" = 2) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 2) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(3, 1, 2, 1, 7, ((SELECT "basePrice" FROM "products" WHERE "id" = 3) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(4, 2, 2, 1, 7, ((SELECT "basePrice" FROM "products" WHERE "id" = 4) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 2) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(5, 1, 2, 1, 8, ((SELECT "basePrice" FROM "products" WHERE "id" = 5) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(6, 2, 2, 1, 8, ((SELECT "basePrice" FROM "products" WHERE "id" = 6) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 2) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(7, 1, 2, 1, 9, ((SELECT "basePrice" FROM "products" WHERE "id" = 7) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(8, 2, 2, 1, 9, ((SELECT "basePrice" FROM "products" WHERE "id" = 8) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 2) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(9, 1, 2, 1, 10, ((SELECT "basePrice" FROM "products" WHERE "id" = 9) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(10, 2, 2, 1, 10, ((SELECT "basePrice" FROM "products" WHERE "id" = 10) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 2) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 2))),
+(61, 3, 2, 1, 6, ((SELECT "basePrice" FROM "products" WHERE "id" = 61) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 3) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(62, 1, 2, 1, 6, ((SELECT "basePrice" FROM "products" WHERE "id" = 62) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(63, 3, 2, 1, 7, ((SELECT "basePrice" FROM "products" WHERE "id" = 63) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 3) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(64, 1, 2, 1, 7, ((SELECT "basePrice" FROM "products" WHERE "id" = 64) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(65, 3, 2, 1, 8, ((SELECT "basePrice" FROM "products" WHERE "id" = 65) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 3) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(66, 1, 2, 1, 8, ((SELECT "basePrice" FROM "products" WHERE "id" = 66) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(67, 3, 2, 1, 9, ((SELECT "basePrice" FROM "products" WHERE "id" = 67) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 3) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(68, 1, 2, 1, 9, ((SELECT "basePrice" FROM "products" WHERE "id" = 68) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(69, 3, 2, 1, 10, ((SELECT "basePrice" FROM "products" WHERE "id" = 69) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 3) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(70, 1, 2, 1, 10, ((SELECT "basePrice" FROM "products" WHERE "id" = 70) + (SELECT "aditionalPrice" FROM "productSize" WHERE "id" = 1) + (SELECT "adittionalPrice" FROM "productVariant" WHERE "id" = 1))),
+(31, NULL, NULL, 1, 6, (SELECT "basePrice" FROM "products" WHERE "id" = 31)),
+(32, NULL, NULL, 1, 7, (SELECT "basePrice" FROM "products" WHERE "id" = 32)),
+(33, NULL, NULL, 1, 8, (SELECT "basePrice" FROM "products" WHERE "id" = 33)),
+(34, NULL, NULL, 1, 9, (SELECT "basePrice" FROM "products" WHERE "id" = 34)),
+(35, NULL, NULL, 1, 10, (SELECT "basePrice" FROM "products" WHERE "id" = 35));
 
 SELECT * FROM "orderDetails";
+SELECT SUM("subTotal") AS "totalHarusBayar"
+FROM "orderDetails"
+WHERE id BETWEEN 6 AND 35;
