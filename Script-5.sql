@@ -1,4 +1,5 @@
 -- Active: 1699586113023@@127.0.0.1@5432@Coffee Shop@public
+/*DEMO PEMBUATAN TABLE*/
 CREATE TYPE "roles" AS ENUM ('admin', 'staff', 'customer');
 CREATE TABLE "users" (
 	"id" SERIAL PRIMARY KEY,
@@ -21,6 +22,7 @@ CREATE TABLE "products"(
 	"image"VARCHAR(255),
 	"discount" NUMERIC(3,2),
 	"isRecommended" BOOLEAN,
+    "stock" INT,
 	"created_At" TIMESTAMP DEFAULT now(),
 	"updated_At" TIMESTAMP
 );
@@ -178,90 +180,89 @@ values
 	('Bob Johnson','bob.johnson@example.com','hashed_password_3','789 Pine St, Village',NULL,'+6281112223333','customer'),
 	('Alice Lee','alice.lee@example.com','hashed_password_4','999 Elm St, Hamlet',NULL,'+6284445556666','customer'),
 	('David Wang','david.wang@example.com','hashed_password_5','567 Birch St, Suburb',NULL,'+6285556667777','admin');
-
-INSERT INTO "products" ("name","description","basePrice","image","discount","isRecommended")
+SELECT COUNT("id") FROM "users";
+INSERT INTO "products" ("name","description","basePrice","image","discount","isRecommended","stock")
 VALUES
-    ('Espresso', 'Kopi hitam klasik dengan rasa pekat', 10000, NULL, NULL, NULL),
-    ('Latte', 'Espresso dengan susu steamed dan sedikit buih', 10000, NULL, NULL, NULL),
-    ('Cappuccino', 'Espresso dengan sejumlah sama susu dan foam susu', 10000, NULL, NULL, NULL),
-    ('Americano', 'Espresso dengan lebih banyak air', 10000, NULL, NULL, NULL),
-    ('Mocha', 'Espresso dengan campuran susu dan cokelat', 10000, NULL, NULL, NULL),
-    ('Macchiato', 'Espresso dengan sejumlah kecil susu', 10000, NULL, NULL, NULL),
-    ('Flat White', 'Espresso dengan susu steamed dan foam yang halus', 10000, NULL, NULL, NULL),
-    ('Affogato', 'Espresso disiramkan ke atas es krim vanilla', 10000, NULL, NULL, NULL),
-    ('Cold Brew', 'Kopi diseduh dengan air dingin selama beberapa jam', 10000, NULL, NULL, NULL),
-    ('Irish Coffee', 'Kopi dengan campuran whiskey dan krim', 10000, NULL, NULL, NULL),
-    ('Pour Over', 'Metode penyeduhan kopi secara manual dengan air panas', 10000, NULL, NULL, NULL),
-    ('Turkish Coffee', 'Kopi yang diseduh dengan bubuk kopi, air, dan gula', 10000, NULL, NULL, NULL),
-    ('Vienna Coffee', 'Espresso dengan tambahan krim dan gula', 10000, NULL, NULL, NULL),
-    ('Ristretto', 'Espresso dengan volume air yang lebih sedikit', 10000, NULL, NULL, NULL),
-    ('Iced Caramel Macchiato', 'Espresso dengan susu dan sirup karamel di atas es', 10000, NULL, NULL, NULL),
-    ('Nitro Cold Brew', 'Cold brew dengan nitrogen untuk kelembutan dan kebasaan', 10000, NULL, NULL, NULL),
-    ('Maple Pecan Latte', 'Latte dengan campuran rasa maple dan kacang pecan', 10000, NULL, NULL, NULL),
-    ('Cascara Fizz', 'Minuman ringan berkarbonasi dengan cascara (kulit buah kopi)', 10000, NULL, NULL, NULL),
-    ('Honey Lavender Latte', 'Latte dengan campuran madu dan lavender', 10000, NULL, NULL, NULL),
-    ('Cinnamon Dolce Latte', 'Latte dengan campuran cinnamon dan gula', 10000, NULL, NULL, NULL),
-    ('Black and Tan', 'Campuran Cold Brew dan Nitro Cold Brew', 10000, NULL, NULL, NULL),
-    ('Espresso Tonic', 'Espresso disajikan dengan tonik dan es', 10000, NULL, NULL, NULL),
-    ('Coconut Cold Brew', 'Cold brew dengan tambahan susu kelapa', 10000, NULL, NULL, NULL),
-    ('Chai Latte', 'Campuran teh chai dengan susu dan rempah-rempah', 10000, NULL, NULL, NULL),
-    ('Hazelnut Mocha', 'Mocha dengan tambahan rasa hazelnut', 10000, NULL, NULL, NULL),
-    ('Café au Lait', 'Setengah kopi, setengah susu panas', 10000, NULL, NULL, NULL),
-    ('Iced Matcha Latte', 'Matcha dengan susu dan es', 10000, NULL, NULL, NULL),
-    ('Espresso Affogato', 'Espresso disiramkan ke atas es krim vanilla', 10000, NULL, NULL,NULL),
-    ('Pumpkin Spice Latte', 'Latte dengan campuran pumpkin spice', 10000, NULL, NULL, NULL),
-    ('Irish Cream Cold Brew', 'KOPI Cold brew dengan campuran irish cream', 10000, NULL, NULL,NULL),
-    ('Avocado Toast', 'Roti gandum panggang dengan alpukat matang di atasnya', 15000, NULL, NULL, NULL),
-    ('Caprese Sandwich', 'Roti dengan tomat, mozzarella, dan daun basil', 15000, NULL, NULL, NULL),
-    ('Quinoa Salad', 'Salad segar dengan quinoa, sayuran, dan dressing balsamic', 15000, NULL, NULL, NULL),
-    ('Chicken Caesar Wrap', 'Wrap dengan potongan ayam panggang, selada romaine, dan dressing caesar', 15000, NULL, NULL, NULL),
-    ('Vegetarian Panini', 'Panini dengan sayuran panggang dan keju', 15000, NULL, NULL, NULL),
-    ('Smashed Chickpea Sandwich', 'Roti dengan pasta kececi yang diremas, selada, dan tomat', 15000, NULL, NULL, NULL),
-    ('Bacon and Egg Croissant', 'Croissant dengan bacon dan telur dadar', 15000, NULL, NULL, NULL),
-    ('Spinach and Feta Quiche', 'Quiche dengan bayam dan keju feta', 15000, NULL, NULL, NULL),
-    ('Classic Bagel with Cream Cheese', 'Bagel klasik dengan krim keju', 15000, NULL, NULL, NULL),
-    ('Blueberry Muffin', 'Muffin dengan blueberry di dalamnya', 15000, NULL, NULL, NULL),
-    ('Salmon Bagel', 'Bagel dengan irisan salmon, krim keju, dan capers', 15000, NULL, NULL, NULL),
-    ('Vegan Buddha Bowl', 'Bowl dengan campuran sayuran panggang, quinoa, dan hummus', 15000, NULL, NULL, NULL),
-    ('Turkey and Swiss Sandwich', 'Roti dengan daging kalkun, keju Swiss, dan selada', 15000, NULL, NULL, NULL),
-    ('Shrimp Tacos', 'Taco dengan udang panggang, salsa, dan saus krim', 15000, NULL, NULL, NULL),
-    ('Pesto Chicken Panini', 'Panini dengan potongan ayam, saus pesto, dan keju', 15000, NULL, NULL, NULL),
-    ('Mushroom Risotto', 'Risotto dengan jamur panggang dan parmesan', 15000, NULL, NULL, NULL),
-    ('Crispy Cauliflower Bites', 'Gorengan kembang kol yang renyah', 15000, NULL, NULL, NULL),
-    ('Tomato Basil Soup', 'Sup tomat dengan basil segar', 15000, NULL, NULL, NULL),
-    ('Steak and Arugula Salad', 'Salad dengan irisan daging sapi panggang dan rucola', 15000, NULL, NULL, NULL),
-    ('Choco-Banana Pancakes', 'MAKANAN Pancake dengan potongan pisang dan saus cokelat', 15000, NULL, NULL, NULL),
-    ('Classic Lemonade', 'Lemonade segar dengan es', 10000, NULL, NULL, NULL),
-    ('Iced Tea', 'Teh hitam atau hijau disajikan dengan es', 10000, NULL, NULL, NULL),
-    ('Orange Mango Smoothie', 'Smoothie dengan campuran jeruk dan mangga', 10000, NULL, NULL, NULL),
-    ('Sparkling Raspberry Lemonade', 'Lemonade bersoda dengan rasa raspberry', 10000, NULL, NULL, NULL),
-    ('Minty Fresh Limeade', 'Limeade dengan aroma mint yang menyegarkan', 10000, NULL, NULL, NULL),
-    ('Pineapple Coconut Cooler', 'Minuman dingin dengan campuran nanas dan kelapa', 10000, NULL, NULL, NULL),
-    ('Berry Burst Frappuccino', 'Minuman dingin berbasis susu dengan campuran buah berry', 10000, NULL, NULL, NULL),
-    ('Cucumber Mint Refresher', 'Minuman segar dengan campuran mentimun dan mint', 10000, NULL, NULL, NULL),
-    ('Watermelon Lemon Splash', 'Minuman lemonade dengan campuran semangka', 10000, NULL, NULL,NULL),
-    ('Blueberry Lavender Fizz', 'Minuman berkarbonasi dengan campuran blueberry dan lavender', 10000, NULL, NULL, NULL),
-    ('Lemon Berry Splash', 'Minuman segar dengan campuran lemon dan beri', 10000, NULL, NULL,NULL),
-    ('Passion Fruit Iced Tea', 'Teh hitam dengan campuran buah markisa dan es', 10000, NULL, NULL, NULL),
-    ('Peachy Keen Smoothie', 'Smoothie dengan campuran buah persik dan yogurt', 10000, NULL, NULL, NULL),
-    ('Green Apple Fizz', 'Minuman berkarbonasi dengan rasa apel hijau', 10000, NULL, NULL, NULL),
-    ('Cherry Lime Rickey', 'Minuman dengan campuran ceri, lime, dan soda', 10000, NULL, NULL, NULL),
-    ('Mango Tango Cooler', 'Minuman dingin dengan campuran mangga dan jeruk', 10000, NULL, NULL, NULL),
-    ('Blackberry Basil Lemonade', 'Lemonade dengan campuran blackberry dan daun basil', 10000, NULL, NULL, NULL),
-    ('Coconut Pineapple Refresher', 'Minuman segar dengan campuran kelapa dan nanas', 10000, NULL, NULL, NULL),
-    ('Hibiscus Rose Punch', 'Minuman punch dengan campuran hibiscus dan rose', 10000, NULL, NULL, NULL),
-    ('Cranberry Cucumber Sparkle', 'Minuman berkarbonasi dengan campuran cranberry dan mentimun', 10000, NULL, NULL, NULL),
-    ('Tropical Mango Twist', 'Minuman dingin dengan campuran mangga dan buah tropis lainnya', 10000, NULL, NULL, NULL),
-    ('Raspberry Lemon Spritz', 'Minuman berkarbonasi dengan campuran raspberry dan lemon', 10000, NULL, NULL, NULL),
-    ('Ginger Peach Iced Tea', 'Teh dingin dengan campuran jahe dan buah persik', 10000, NULL, NULL, NULL),
-    ('Blue Lagoon Smoothie', 'Smoothie dengan campuran blueberry dan yogurt', 10000, NULL, NULL, NULL),
-    ('Watermelon Mint Refresher', 'Minuman segar dengan campuran semangka dan mint', 10000, NULL, NULL, NULL),
-    ('Cranberry Orange Sparkle', 'Minuman berkarbonasi dengan campuran cranberry dan jeruk', 10000, NULL, NULL, NULL),
-    ('Pineapple Basil Splash', 'Minuman dingin dengan campuran nanas dan daun basil', 10000, NULL, NULL, NULL),
-    ('Citrus Punch Fizz', 'Minuman berkarbonasi dengan campuran berbagai buah citrus', 10000, NULL, NULL, NULL),
-    ('Berry Hibiscus Cooler', 'Minuman dingin dengan campuran beri dan bunga hibiscus', 10000, NULL, NULL, NULL),
-    ('Green Tea Mojito', 'Minuman dingin dengan campuran green tea, mint, dan lime', 10000, NULL, NULL, NULL);
-
+    ('Espresso', 'Kopi hitam klasik dengan rasa pekat', 10000, NULL, NULL, NULL, NULL),
+    ('Latte', 'Espresso dengan susu steamed dan sedikit buih', 10000, NULL, NULL, NULL, NULL),
+    ('Cappuccino', 'Espresso dengan sejumlah sama susu dan foam susu', 10000, NULL, NULL, NULL, NULL),
+    ('Americano', 'Espresso dengan lebih banyak air', 10000, NULL, NULL, NULL, NULL),
+    ('Mocha', 'Espresso dengan campuran susu dan cokelat', 10000, NULL, NULL, NULL, NULL),
+    ('Macchiato', 'Espresso dengan sejumlah kecil susu', 10000, NULL, NULL, NULL, NULL),
+    ('Flat White', 'Espresso dengan susu steamed dan foam yang halus', 10000, NULL, NULL, NULL, NULL),
+    ('Affogato', 'Espresso disiramkan ke atas es krim vanilla', 10000, NULL, NULL, NULL, NULL),
+    ('Cold Brew', 'Kopi diseduh dengan air dingin selama beberapa jam', 10000, NULL, NULL, NULL, NULL),
+    ('Irish Coffee', 'Kopi dengan campuran whiskey dan krim', 10000, NULL, NULL, NULL, NULL),
+    ('Pour Over', 'Metode penyeduhan kopi secara manual dengan air panas', 10000, NULL, NULL, NULL, NULL),
+    ('Turkish Coffee', 'Kopi yang diseduh dengan bubuk kopi, air, dan gula', 10000, NULL, NULL, NULL, NULL),
+    ('Vienna Coffee', 'Espresso dengan tambahan krim dan gula', 10000, NULL, NULL, NULL, NULL),
+    ('Ristretto', 'Espresso dengan volume air yang lebih sedikit', 10000, NULL, NULL, NULL, NULL),
+    ('Iced Caramel Macchiato', 'Espresso dengan susu dan sirup karamel di atas es', 10000, NULL, NULL, NULL, NULL),
+    ('Nitro Cold Brew', 'Cold brew dengan nitrogen untuk kelembutan dan kebasaan', 10000, NULL, NULL, NULL, NULL),
+    ('Maple Pecan Latte', 'Latte dengan campuran rasa maple dan kacang pecan', 10000, NULL, NULL, NULL, NULL),
+    ('Cascara Fizz', 'Minuman ringan berkarbonasi dengan cascara (kulit buah kopi)', 10000, NULL, NULL, NULL, NULL),
+    ('Honey Lavender Latte', 'Latte dengan campuran madu dan lavender', 10000, NULL, NULL, NULL, NULL),
+    ('Cinnamon Dolce Latte', 'Latte dengan campuran cinnamon dan gula', 10000, NULL, NULL, NULL, NULL),
+    ('Black and Tan', 'Campuran Cold Brew dan Nitro Cold Brew', 10000, NULL, NULL, NULL, NULL),
+    ('Espresso Tonic', 'Espresso disajikan dengan tonik dan es', 10000, NULL, NULL, NULL, NULL),
+    ('Coconut Cold Brew', 'Cold brew dengan tambahan susu kelapa', 10000, NULL, NULL, NULL, NULL),
+    ('Chai Latte', 'Campuran teh chai dengan susu dan rempah-rempah', 10000, NULL, NULL, NULL, NULL),
+    ('Hazelnut Mocha', 'Mocha dengan tambahan rasa hazelnut', 10000, NULL, NULL, NULL, NULL),
+    ('Café au Lait', 'Setengah kopi, setengah susu panas', 10000, NULL, NULL, NULL, NULL),
+    ('Iced Matcha Latte', 'Matcha dengan susu dan es', 10000, NULL, NULL, NULL, NULL),
+    ('Espresso Affogato', 'Espresso disiramkan ke atas es krim vanilla', 10000, NULL, NULL,NULL, NULL),
+    ('Pumpkin Spice Latte', 'Latte dengan campuran pumpkin spice', 10000, NULL, NULL, NULL, NULL),
+    ('Irish Cream Cold Brew', 'KOPI Cold brew dengan campuran irish cream', 10000, NULL, NULL,NULL, NULL),
+    ('Avocado Toast', 'Roti gandum panggang dengan alpukat matang di atasnya', 15000, NULL, NULL, NULL, NULL),
+    ('Caprese Sandwich', 'Roti dengan tomat, mozzarella, dan daun basil', 15000, NULL, NULL, NULL, NULL),
+    ('Quinoa Salad', 'Salad segar dengan quinoa, sayuran, dan dressing balsamic', 15000, NULL, NULL, NULL, NULL),
+    ('Chicken Caesar Wrap', 'Wrap dengan potongan ayam panggang, selada romaine, dan dressing caesar', 15000, NULL, NULL, NULL, NULL),
+    ('Vegetarian Panini', 'Panini dengan sayuran panggang dan keju', 15000, NULL, NULL, NULL, NULL),
+    ('Smashed Chickpea Sandwich', 'Roti dengan pasta kececi yang diremas, selada, dan tomat', 15000, NULL, NULL, NULL, NULL),
+    ('Bacon and Egg Croissant', 'Croissant dengan bacon dan telur dadar', 15000, NULL, NULL, NULL, NULL),
+    ('Spinach and Feta Quiche', 'Quiche dengan bayam dan keju feta', 15000, NULL, NULL, NULL, NULL),
+    ('Classic Bagel with Cream Cheese', 'Bagel klasik dengan krim keju', 15000, NULL, NULL, NULL, NULL),
+    ('Blueberry Muffin', 'Muffin dengan blueberry di dalamnya', 15000, NULL, NULL, NULL, NULL),
+    ('Salmon Bagel', 'Bagel dengan irisan salmon, krim keju, dan capers', 15000, NULL, NULL, NULL, NULL),
+    ('Vegan Buddha Bowl', 'Bowl dengan campuran sayuran panggang, quinoa, dan hummus', 15000, NULL, NULL, NULL, NULL),
+    ('Turkey and Swiss Sandwich', 'Roti dengan daging kalkun, keju Swiss, dan selada', 15000, NULL, NULL, NULL, NULL),
+    ('Shrimp Tacos', 'Taco dengan udang panggang, salsa, dan saus krim', 15000, NULL, NULL, NULL, NULL),
+    ('Pesto Chicken Panini', 'Panini dengan potongan ayam, saus pesto, dan keju', 15000, NULL, NULL, NULL, NULL),
+    ('Mushroom Risotto', 'Risotto dengan jamur panggang dan parmesan', 15000, NULL, NULL, NULL, NULL),
+    ('Crispy Cauliflower Bites', 'Gorengan kembang kol yang renyah', 15000, NULL, NULL, NULL, NULL),
+    ('Tomato Basil Soup', 'Sup tomat dengan basil segar', 15000, NULL, NULL, NULL, NULL),
+    ('Steak and Arugula Salad', 'Salad dengan irisan daging sapi panggang dan rucola', 15000, NULL, NULL, NULL, NULL),
+    ('Choco-Banana Pancakes', 'MAKANAN Pancake dengan potongan pisang dan saus cokelat', 15000, NULL, NULL, NULL, NULL),
+    ('Classic Lemonade', 'Lemonade segar dengan es', 10000, NULL, NULL, NULL, NULL),
+    ('Iced Tea', 'Teh hitam atau hijau disajikan dengan es', 10000, NULL, NULL, NULL, NULL),
+    ('Orange Mango Smoothie', 'Smoothie dengan campuran jeruk dan mangga', 10000, NULL, NULL, NULL, NULL),
+    ('Sparkling Raspberry Lemonade', 'Lemonade bersoda dengan rasa raspberry', 10000, NULL, NULL, NULL, NULL),
+    ('Minty Fresh Limeade', 'Limeade dengan aroma mint yang menyegarkan', 10000, NULL, NULL, NULL, NULL),
+    ('Pineapple Coconut Cooler', 'Minuman dingin dengan campuran nanas dan kelapa', 10000, NULL, NULL, NULL, NULL),
+    ('Berry Burst Frappuccino', 'Minuman dingin berbasis susu dengan campuran buah berry', 10000, NULL, NULL, NULL, NULL),
+    ('Cucumber Mint Refresher', 'Minuman segar dengan campuran mentimun dan mint', 10000, NULL, NULL, NULL, NULL),
+    ('Watermelon Lemon Splash', 'Minuman lemonade dengan campuran semangka', 10000, NULL, NULL,NULL, NULL),
+    ('Blueberry Lavender Fizz', 'Minuman berkarbonasi dengan campuran blueberry dan lavender', 10000, NULL, NULL, NULL, NULL),
+    ('Lemon Berry Splash', 'Minuman segar dengan campuran lemon dan beri', 10000, NULL, NULL,NULL, NULL),
+    ('Passion Fruit Iced Tea', 'Teh hitam dengan campuran buah markisa dan es', 10000, NULL, NULL, NULL, NULL),
+    ('Peachy Keen Smoothie', 'Smoothie dengan campuran buah persik dan yogurt', 10000, NULL, NULL, NULL, NULL),
+    ('Green Apple Fizz', 'Minuman berkarbonasi dengan rasa apel hijau', 10000, NULL, NULL, NULL, NULL),
+    ('Cherry Lime Rickey', 'Minuman dengan campuran ceri, lime, dan soda', 10000, NULL, NULL, NULL,NULL),
+    ('Mango Tango Cooler', 'Minuman dingin dengan campuran mangga dan jeruk', 10000, NULL, NULL, NULL, NULL),
+    ('Blackberry Basil Lemonade', 'Lemonade dengan campuran blackberry dan daun basil', 10000, NULL, NULL, NULL, NULL),
+    ('Coconut Pineapple Refresher', 'Minuman segar dengan campuran kelapa dan nanas', 10000, NULL, NULL, NULL,NULL),
+    ('Hibiscus Rose Punch', 'Minuman punch dengan campuran hibiscus dan rose', 10000, NULL, NULL, NULL, NULL),
+    ('Cranberry Cucumber Sparkle', 'Minuman berkarbonasi dengan campuran cranberry dan mentimun', 10000, NULL, NULL, NULL, NULL),
+    ('Tropical Mango Twist', 'Minuman dingin dengan campuran mangga dan buah tropis lainnya', 10000, NULL, NULL, NULL,NULL),
+    ('Raspberry Lemon Spritz', 'Minuman berkarbonasi dengan campuran raspberry dan lemon', 10000, NULL, NULL, NULL,NULL),
+    ('Ginger Peach Iced Tea', 'Teh dingin dengan campuran jahe dan buah persik', 10000, NULL, NULL, NULL, NULL),
+    ('Blue Lagoon Smoothie', 'Smoothie dengan campuran blueberry dan yogurt', 10000, NULL, NULL, NULL, NULL),
+    ('Watermelon Mint Refresher', 'Minuman segar dengan campuran semangka dan mint', 10000, NULL, NULL, NULL, NULL),
+    ('Cranberry Orange Sparkle', 'Minuman berkarbonasi dengan campuran cranberry dan jeruk', 10000, NULL, NULL, NULL, NULL),
+    ('Pineapple Basil Splash', 'Minuman dingin dengan campuran nanas dan daun basil', 10000, NULL, NULL, NULL, NULL),
+    ('Citrus Punch Fizz', 'Minuman berkarbonasi dengan campuran berbagai buah citrus', 10000, NULL, NULL, NULL, 100),
+    ('Berry Hibiscus Cooler', 'Minuman dingin dengan campuran beri dan bunga hibiscus', 10000, NULL, NULL, NULL, 50),
+    ('Green Tea Mojito', 'Minuman dingin dengan campuran green tea, mint, dan lime', 10000, NULL, NULL, NULL, 100);
 INSERT INTO "productSize" ("size", "aditionalPrice")
 VALUES
     ('Small', 3000),
@@ -498,3 +499,125 @@ SELECT * FROM "orderDetails";
 SELECT SUM("subTotal") AS "totalHarusBayar"
 FROM "orderDetails"
 WHERE id BETWEEN 6 AND 35;
+
+
+
+/*demo join*/
+select "p"."name","basePrice", "c"."name"
+from "products" "p"
+join "productCategories" "pc" on "p"."id"="pc"."productId" 
+join "categories" "c" on "pc"."categoryId" = "c"."id" 
+where "c"."id" in ('2');
+
+SELECT "p"."name","c"."name", "ps"."size", "pv"."name", "o"."orderNumber", "od"."subTotal" 
+FROM "products" "p"
+JOIN "productCategories" "pc" ON "pc"."productId" = "p"."id"
+JOIN "categories" "c" ON "c"."id" = "pc"."categoryId"
+JOIN "orderDetails" "od" ON "p"."id" = "od"."productId"
+JOIN "productSize" "ps" ON "od"."productSizeId" = "ps"."id"
+JOIN "productVariant" "pv" ON "od"."productVariantId" = "pv"."id"
+JOIN "orders" "o" ON "od"."orderId" = "o"."id";
+
+/*DEMO CRUD*/
+INSERT INTO "promo" ("name","code","description","percentage","expiredAt","maximumPromo","minimumAmount")
+VALUES
+('HARI MERDEKA', 'MERDEKA80', NULL, 0.8, now() + INTERVAL '1 day', 50000, 100000);
+
+UPDATE "users" SET "fullName" = 'Eka Riana', "email" = 'ekariana@gmail.com' WHERE "id" = '50';
+
+DELETE FROM "users" WHERE "id" IN ('51','52','53','54','55');
+
+SELECT "u"."fullName","email" FROM "users" AS "u";
+SELECT * FROM "users";
+
+-- DEMO QUERY PRODUK BERDASARKAN NAMA
+SELECT "p"."name" FROM "products" AS "p";
+SELECT "p"."id","name" FROM "products" AS "p" WHERE "id" = '30';
+SELECT "p"."name" FROM "products" AS "p" LIMIT '10';
+SELECT "p"."id","name" "nameProducts" FROM "products" AS "p" LIMIT '10' OFFSET '30';
+SELECT * FROM "products" WHERE "name" ILIKE '%er';
+SELECT * FROM "products" WHERE "name" ILIKE '%er%';
+SELECT * FROM "products" WHERE "name" ILIKE 'ma%';
+
+-- DEMO QUERY PRODUK BERDASARKAN NAMA,KATEGORI, PROMO & HARGA
+select* FROM"products";
+SELECT "p"."name" "nameProducts", "basePrice", "c"."name" "nameCategories", "pr"."code" 
+FROM "products" "p"
+FULL JOIN "productCategories" "pc" ON "pc"."productId" = "p"."id"
+FULL JOIN "categories" "c" ON "pc"."categoryId" = "c"."id"
+FULL JOIN "orderDetails" "od" ON "p"."id" = "od"."productId"
+FULL JOIN "orders" "o" ON "od"."orderId" = "o"."id"
+FULL JOIN "promo" "pr" ON "pr"."id" = "o"."promoId";
+
+/*PAGINATION (endapatkan sejumlah tertentu baris dari hasil kueri, dimulai dari posisi tertentu)*/
+SELECT "p"."id","name" "nameProducts" FROM "products" AS "p" LIMIT '10' OFFSET '30';
+
+/*DEMO TRANSAKSI*/
+-- 1
+START TRANSACTION;
+
+INSERT INTO "orders"("userId", "orderNumber", "promoId", "total", "taxAmount", "status", "deliveryAddress", "fullName", "email")
+VALUES (10, '#001-10112023-0011', NULL, 75000, 0, 'ON-PROCCESS', 'Jl. Mawar No. 67, Bukit Kecil, Palembang', 'Nana Sari', 'nanasari@hotmail.com');
+
+INSERT INTO "orderDetails" ("productId", "productSizeId", "productVariantId", "quantity", "orderId", "subTotal")
+VALUES
+(80, 1, 2, 5, 11, 75000);
+UPDATE "products"
+SET "stock" = 95
+WHERE "id" = 80;
+
+COMMIT;
+-- ROLLBACK;
+
+SELECT * FROM "products";
+-- 2
+START TRANSACTION;
+
+INSERT INTO "orders"("userId", "orderNumber", "promoId", "total", "taxAmount", "status", "deliveryAddress", "fullName", "email")
+VALUES (11, '#001-10112023-0012', NULL, 75000, 0, 'ON-PROCCESS', 'Jl. Mawar No. 67, Bukit Kecil, Palembang', 'Nana Sari', 'nanasari@hotmail.com');
+
+INSERT INTO "orderDetails" ("productId", "productSizeId", "productVariantId", "quantity", "orderId", "subTotal")
+VALUES
+(79, 1, 2, 5, 12, 75000);
+UPDATE "products"
+SET "stock" = 45
+WHERE "id" = 79;
+
+-- COMMIT;
+ROLLBACK;
+SELECT * FROM "products";
+SELECT * FROM "users";
+
+/*DEMO RELATION*/
+SELECT "p"."name" "nameProducts", "basePrice", "c"."name" "nameCategories", "pr"."code" 
+FROM "products" "p"
+FULL JOIN "productCategories" "pc" ON "pc"."productId" = "p"."id"
+FULL JOIN "categories" "c" ON "pc"."categoryId" = "c"."id"
+FULL JOIN "orderDetails" "od" ON "p"."id" = "od"."productId"
+FULL JOIN "orders" "o" ON "od"."orderId" = "o"."id"
+FULL JOIN "promo" "pr" ON "pr"."id" = "o"."promoId";
+
+SELECT "p"."name","c"."name", "ps"."size", "pv"."name", "o"."orderNumber", "od"."subTotal" 
+FROM "products" "p"
+INNER JOIN "productCategories" "pc" ON "pc"."productId" = "p"."id"
+INNER JOIN "categories" "c" ON "c"."id" = "pc"."categoryId"
+INNER JOIN "orderDetails" "od" ON "p"."id" = "od"."productId"
+JOIN "productSize" "ps" ON "od"."productSizeId" = "ps"."id"
+JOIN "productVariant" "pv" ON "od"."productVariantId" = "pv"."id"
+JOIN "orders" "o" ON "od"."orderId" = "o"."id";
+
+SELECT "p"."name" "nameProducts", "basePrice", "c"."name" "nameCategories", "pr"."code" 
+FROM "products" "p"
+LEFT JOIN "productCategories" "pc" ON "pc"."productId" = "p"."id"
+LEFT JOIN "categories" "c" ON "pc"."categoryId" = "c"."id"
+LEFT JOIN "orderDetails" "od" ON "p"."id" = "od"."productId"
+LEFT JOIN "orders" "o" ON "od"."orderId" = "o"."id"
+LEFT JOIN "promo" "pr" ON "pr"."id" = "o"."promoId";
+
+SELECT "p"."name" "nameProducts", "basePrice", "c"."name" "nameCategories", "pr"."code" 
+FROM "products" "p"
+RIGHT JOIN "productCategories" "pc" ON "pc"."productId" = "p"."id"
+RIGHT JOIN "categories" "c" ON "pc"."categoryId" = "c"."id"
+RIGHT JOIN "orderDetails" "od" ON "p"."id" = "od"."productId"
+RIGHT JOIN "orders" "o" ON "od"."orderId" = "o"."id"
+RIGHT JOIN "promo" "pr" ON "pr"."id" = "o"."promoId";
