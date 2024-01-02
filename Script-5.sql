@@ -1,9 +1,10 @@
+-- Active: 1703609116931@@127.0.0.1@5432@Coffee Shop@public
 CREATE TYPE "roles" AS ENUM ('admin', 'staff', 'customer');
 CREATE TABLE "users" (
 	"id" SERIAL PRIMARY KEY,
 	"fullName" VARCHAR(100) NOT NULL,
 	"email" VARCHAR(100) NOT NULL UNIQUE,
-	"password" VARCHAR(100) NOT NULL UNIQUE,
+	"password" VARCHAR(100) NOT NULL,
 	"address" TEXT,
 	"picture" VARCHAR(255),
 	"phoneNumber" VARCHAR(15),
@@ -406,3 +407,9 @@ SELECT * FROM "orderDetails";
 SELECT SUM("subTotal") AS "totalHarusBayar"
 FROM "orderDetails"
 WHERE id BETWEEN 6 AND 35;
+
+
+
+UPDATE "products"
+SET "isRecommended" = true
+WHERE "id" = 5;
